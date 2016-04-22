@@ -61,6 +61,11 @@ implements Mage_Widget_Block_Interface
     }
 ```
 
+###### The result
+The result will look similar to this, depending on the columns you've configured in your `widget.xml`:
+
+![Widget usage example](https://cloud.githubusercontent.com/assets/568497/14742831/7b2fcd76-089e-11e6-9235-f92f9296ed6c.png)
+
 Compatibility
 -------------
 - Magento >= 1.9 (untested, but should work in 1.7 as well)
