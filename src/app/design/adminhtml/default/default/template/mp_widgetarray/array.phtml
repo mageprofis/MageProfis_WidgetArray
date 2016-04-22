@@ -108,14 +108,14 @@ var arrayRow<?php echo $_htmlId ?> = {
     },
 
     serialize : function(e) {
-        var values = [];
+        var values = {};
         $$('#grid<?php echo $_htmlId ?> .item-row').each(function(tr, i) {
             var a = {};
             $(tr).select('.widget-array-input').each(function(input) {
                 var k = input.name.match(/\w+/g).pop();
                 a[k] = input.value;
             });
-            values.push(a);
+            values[$(tr).identify()] = a;
         });
         var b64 = btoa(JSON.stringify(values));
         $('items<?php echo $_htmlId ?>').value = b64;
