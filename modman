@@ -1,0 +1,6 @@
+src/app/code/community/MageProfis/WidgetArray                           app/code/community/MageProfis/WidgetArray
+src/app/code/community/Varien/Data/Form/Element                         app/code/community/Varien/Data/Form/Element
+
+src/app/design/adminhtml/default/default/template/mp_widgetarray        app/design/adminhtml/default/default/template/mp_widgetarray
+
+src/app/etc/modules/*                                                   app/etc/modules/

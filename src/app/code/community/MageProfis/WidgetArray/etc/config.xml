@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MageProfis_WidgetArray>
+            <version>1.0.0</version>
+        </MageProfis_WidgetArray>
+    </modules>
+    <global>
+        <blocks>
+            <mp_widgetarray>
+                <class>MageProfis_WidgetArray_Block</class>
+            </mp_widgetarray>
+        </blocks>
+        <helpers>
+            <mp_widgetarray>
+                <class>MageProfis_WidgetArray_Helper</class>
+            </mp_widgetarray>
+        </helpers>
+    </global>
+</config>

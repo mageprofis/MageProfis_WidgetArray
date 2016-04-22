@@ -1,0 +1,15 @@
+{
+    "name": "mageprofis/widgetarray",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "Dynamic widget fields",
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "authors":[
+        {
+            "name":"Volker Thiel",
+            "email":"volker.thiel@mage-profis.de"
+        }
+    ]
+}

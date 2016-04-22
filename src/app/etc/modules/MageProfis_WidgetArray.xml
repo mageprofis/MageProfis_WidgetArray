@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <MageProfis_WidgetArray>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends></depends>
+        </MageProfis_WidgetArray>
+    </modules>
+</config>
