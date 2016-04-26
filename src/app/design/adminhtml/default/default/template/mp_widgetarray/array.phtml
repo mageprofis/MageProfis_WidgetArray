@@ -35,7 +35,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         </tbody>
     </table>
     <input type="hidden" name="<?php echo $this->getElement()->getName() ?>[__empty]" value="" />
-    <input type="hidden" name="<?php echo $this->getElement()->getName() ?>" id="items<?php echo $_htmlId ?>"/>
+    <input type="hidden" name="<?php echo $this->getElement()->getName() ?>" id="items<?php echo $_htmlId ?>" value="<?php echo $this->getElement()->getValue() ?>"/>
 </div>
 <div id="empty<?php echo $_htmlId ?>">
     <button style="" onclick="" class="scalable add" type="button" id="emptyAddBtn<?php echo $_htmlId ?>">
@@ -105,6 +105,7 @@ var arrayRow<?php echo $_htmlId ?> = {
         if (0 == this.rowsCount) {
             this.showButtonOnly();
         }
+        this.serialize();
     },
 
     serialize : function(e) {
@@ -117,8 +118,14 @@ var arrayRow<?php echo $_htmlId ?> = {
             });
             values[$(tr).identify()] = a;
         });
-        var b64 = btoa(JSON.stringify(values));
+        var b64 = this.encode(JSON.stringify(values));
         $('items<?php echo $_htmlId ?>').value = b64;
+    },
+
+    encode: function b64EncodeUnicode(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        }));
     },
 
     showButtonOnly : function()
