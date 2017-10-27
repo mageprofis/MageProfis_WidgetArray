@@ -77,11 +77,31 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
 
         if($column['type']){
             $className = 'Varien_Data_Form_Element_'.ucfirst(strtolower($column['type']));
+            
             if(class_exists($className)){
-                $element = new $className($column);
+                $element = new $className($column);                
                 $element->setForm($this->getElement()->getForm());
                 $element->setName($inputName);
-                return trim(preg_replace( "/\r|\n/", "", $element->getElementHtml() ));
+                $element->setId("input_#{_id}_" . $columnName);
+
+                if($column['source_model']){
+                    $sourceModel = Mage::getModel($column['source_model']);
+                    $element->setValues($sourceModel->toOptionArray());
+                }
+
+                return trim(preg_replace( "/\r|\n/", "", $element->getElementHtml() ));                
+            }
+
+            try {
+                $block = Mage::app()->getLayout()->createBlock($column['type']);
+                $element = new Varien_Data_Form_Element_Text();
+                $element->setForm($this->getElement()->getForm());
+                $element->setName($inputName);
+                $element->setId("input_#{_id}_" . $columnName);
+                return trim(preg_replace( "/\r|\n/", "", "<table>" . $block->render($element) . "</table>"));
+            }
+            catch(Mage_Core_Exception $e) {
+                //supress the error
             }
         }
 
