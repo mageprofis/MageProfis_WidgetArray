@@ -101,7 +101,7 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
                 return trim(preg_replace( "/\r|\n/", "", "<table>" . $block->render($element) . "</table>"));
             }
             catch(Mage_Core_Exception $e) {
-                //supress the error
+                //supress the error in the event a block doesn't exist.
             }
         }
 
