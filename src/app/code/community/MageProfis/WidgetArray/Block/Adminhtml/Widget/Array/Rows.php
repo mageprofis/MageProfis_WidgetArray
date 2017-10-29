@@ -82,7 +82,9 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
                 $element = new $className($column);                
                 $element->setForm($this->getElement()->getForm());
                 $element->setName($inputName);
+                $element->addClass("widget-array-input");
                 $element->setId("input_#{_id}_" . $columnName);
+                $element->setValue($columnName);
 
                 if($column['source_model']){
                     $sourceModel = Mage::getModel($column['source_model']);
@@ -97,11 +99,13 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
                 $element = new Varien_Data_Form_Element_Text();
                 $element->setForm($this->getElement()->getForm());
                 $element->setName($inputName);
+                $element->addClass("widget-array-input");                
                 $element->setId("input_#{_id}_" . $columnName);
+                $element->setValue("#{" . $columnName . "}");                
                 return trim(preg_replace( "/\r|\n/", "", "<table>" . $block->render($element) . "</table>"));
             }
             catch(Mage_Core_Exception $e) {
-                //supress the error in the event a block doesn't exist.
+                //supress the error
             }
         }
 
