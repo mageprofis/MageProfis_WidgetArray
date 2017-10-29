@@ -85,6 +85,13 @@ var arrayRow<?php echo $_htmlId ?> = {
         else {
             Element.insert($(insertAfterId), {after: this.template.evaluate(templateData)});
         }
+        
+        //Hook up Values .. This is duplicate work but is necessary for non-text inputs.
+        <?php foreach ($this->_columns as $columnName => $column):?>
+            $('input_' + templateData._id + '_<?php echo $columnName ?>').setValue(templateData["<?php echo $columnName;?>"])
+        <?php endforeach; ?>
+
+        
 
 <?php if ($this->_addAfter):?>
         Event.observe('addAfterBtn' + templateData._id, 'click', this.add.bind(this, '', templateData._id));

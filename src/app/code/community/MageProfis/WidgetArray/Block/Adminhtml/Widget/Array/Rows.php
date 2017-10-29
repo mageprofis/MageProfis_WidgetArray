@@ -10,6 +10,28 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
     }
 
     /**
+     * Add a column to array-grid
+     *
+     * @param string $name
+     * @param array $params
+     */
+    public function addColumn($name, $params)
+    {
+        $this->_columns[$name] = array(
+            'label'     => empty($params['label']) ? 'Column' : $params['label'],
+            'size'      => empty($params['size'])  ? false    : $params['size'],
+            'style'     => empty($params['style'])  ? null    : $params['style'],
+            'class'     => empty($params['class'])  ? null    : $params['class'],
+            'source_model' => empty($params['source_model'])  ? null    : $params['source_model'],
+            'type'      => empty($params['type'])  ? null    : $params['type'],            
+            'renderer'  => false,
+        );
+        if ((!empty($params['renderer'])) && ($params['renderer'] instanceof Mage_Core_Block_Abstract)) {
+            $this->_columns[$name]['renderer'] = $params['renderer'];
+        }
+    }
+
+    /**
      * Prepare to render
      */
     protected function _prepareToRender()
@@ -17,9 +39,11 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
         $config = $this->getConfig();
 
         if (isset($config['columns']) && is_array($config['columns']) && $config['columns']) {
-            foreach ($config['columns'] as $colKey => $col) {
+            foreach ($config['columns'] as $colKey => $col) {                
                 $this->addColumn($colKey, array(
                     'label' => isset($col['label']) ? $col['label'] : $colKey,
+                    'type' => isset($col['type']) ? $col['type'] : null,
+                    'source_model' => isset($col['source_model']) ? $col['source_model'] : null,
                 ));
             }
         } else {
@@ -50,6 +74,41 @@ class MageProfis_WidgetArray_Block_Adminhtml_Widget_Array_Rows extends Mage_Admi
             return $column['renderer']->setInputName($inputName)->setColumnName($columnName)->setColumn($column)
                 ->toHtml();
         }
+
+        if($column['type']){
+            $className = 'Varien_Data_Form_Element_'.ucfirst(strtolower($column['type']));
+            
+            if(class_exists($className)){
+                $element = new $className($column);                
+                $element->setForm($this->getElement()->getForm());
+                $element->setName($inputName);
+                $element->addClass("widget-array-input");
+                $element->setId("input_#{_id}_" . $columnName);
+                $element->setValue($columnName);
+
+                if($column['source_model']){
+                    $sourceModel = Mage::getModel($column['source_model']);
+                    $element->setValues($sourceModel->toOptionArray());
+                }
+
+                return trim(preg_replace( "/\r|\n/", "", $element->getElementHtml() ));                
+            }
+
+            try {
+                $block = Mage::app()->getLayout()->createBlock($column['type']);
+                $element = new Varien_Data_Form_Element_Text();
+                $element->setForm($this->getElement()->getForm());
+                $element->setName($inputName);
+                $element->addClass("widget-array-input");                
+                $element->setId("input_#{_id}_" . $columnName);
+                $element->setValue("#{" . $columnName . "}");                
+                return trim(preg_replace( "/\r|\n/", "", "<table>" . $block->render($element) . "</table>"));
+            }
+            catch(Mage_Core_Exception $e) {
+                //supress the error
+            }
+        }
+
 
         return '<input type="text" id="input_#{_id}_' . $columnName . '" name="' . $inputName . '" value="#{' . $columnName . '}" ' .
             ($column['size'] ? 'size="' . $column['size'] . '"' : '') . ' class="widget-array-input ' .
